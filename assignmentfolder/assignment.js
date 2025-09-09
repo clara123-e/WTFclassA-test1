@@ -22,22 +22,22 @@ function withdraw(account, amount) {
 }
 
 // --- 4. Transfer function (same-currency only) ---
-function transfer(fromAcc, toAcc, amount) {
+function transfer(fromAccount, toAccount, amount) {
   if (fromAcc.currency !== toAcc.currency) {
     console.log("Transfer failed: currency mismatch");
     return; // stop here if currencies differ
   }
-  if (fromAcc.balance >= amount) {
-    fromAcc.balance -= amount;
-    toAcc.balance += amount;
-    console.log(`Transfer successful: ${amount} ${fromAcc.currency} from ${fromAcc.name} to ${toAcc.name}`);
+  if (fromAccount.balance >= amount) {
+    fromAccount.balance -= amount;
+    toAccount.balance += amount;
+    console.log(`Transfer successful: ${amount} ${fromAccount.currency} from ${fromAccount.name} to ${toAccount.name}`);
   } else {
-    console.log(`Transfer failed: ${fromAcc.name} has insufficient funds`);
+    console.log(`Transfer failed: ${fromAccount.name} has insufficient funds`);
   }
 }
 
 // --- 5. Transfer with conversion (bonus) ---
-function transferWithConversion(fromAcc, toAcc, amount, rate) {
+function transferWithConversion(fromAccount, toAccount, amount, rate) {
   // 'rate' means: 1 unit of fromAcc.currency = rate units of toAcc.currency
   if (fromAcc.currency === "EUR" && toAcc.currency === "USD") {
     // convert EUR -> USD using rate
@@ -45,13 +45,13 @@ function transferWithConversion(fromAcc, toAcc, amount, rate) {
       const converted = amount * rate;
       fromAcc.balance -= amount;
       toAcc.balance += converted;
-      console.log(`Converted transfer: ${amount} ${fromAcc.currency} -> ${converted.toFixed(2)} ${toAcc.currency} from ${fromAcc.name} to ${toAcc.name}`);
+      console.log(`Converted transfer: ${amount} ${fromAccount.currency} -> ${converted.toFixed(2)} ${toAccount.currency} from ${fromAccount.name} to ${toAccount.name}`);
     } else {
-      console.log(`Transfer failed: ${fromAcc.name} has insufficient funds`);
+      console.log(`Transfer failed: ${fromAccount.name} has insufficient funds`);
     }
   } else {
     // if not this specific pair, fall back to normal transfer (which checks currency equality)
-    transfer(fromAcc, toAcc, amount);
+    transfer(fromAccount, toAccount, amount);
   }
 }
 
@@ -93,7 +93,7 @@ transferWithConversion(user4, user3, 50, 1.1);
 
 // Monthly maintenance for all accounts
 const accounts = [user1, user2, user3, user4];
-accounts.forEach(acc => monthlyMaintenance(acc));
+accounts.forEach(account => monthlyMaintenance(acc));
 
 // Find highest and lowest balances
 const highest = accounts.reduce((a, b) => (a.balance > b.balance ? a : b));
@@ -105,6 +105,6 @@ console.log(`Lowest balance: ${lowest.name} with ${lowest.balance.toFixed(2)} ${
 // Final summary
 console.log("\n--- Final Account Summary ---");
 accounts.forEach(acc => {
-  console.log(`${acc.name} | ${acc.type} | Balance: ${acc.balance.toFixed(2)} ${acc.currency} | Status: ${getStatus(acc)}`);
+  console.log(`${account.name} | ${account.type} | Balance: ${account.balance.toFixed(2)} ${account.currency} | Status: ${getStatus(account)}`);
 });
 
